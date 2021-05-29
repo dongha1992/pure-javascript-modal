@@ -1,0 +1,26 @@
+{
+  "name": "liveconnect-frontend-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/liveconnect-dev/liveconnect-frontend-assignment-kamdunga2002.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/liveconnect-dev/liveconnect-frontend-assignment-kamdunga2002/issues"
+  },
+  "homepage": "https://gitlab.com/liveconnect-dev/liveconnect-frontend-assignment-kamdunga2002#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.14.4"
+  },
+  "dependencies": {}
+}
