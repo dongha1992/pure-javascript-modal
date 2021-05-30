@@ -1,8 +1,8 @@
-import Modal from './components/CommonDialog';
+import CommonDialog from './components/CommonDialog.js';
 
 export default class App {
-  constructor() {
-
-
+  constructor(props) {
+    let dialog = new CommonDialog({ props });
+    dialog.open();
   }
 }

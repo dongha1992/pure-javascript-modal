@@ -12,14 +12,26 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var CommonDialog = /*#__PURE__*/function () {
-  function CommonDialog() {
+  function CommonDialog(_ref) {
+    var props = _ref.props;
+
     _classCallCheck(this, CommonDialog);
+
+    this.isModalOpen = false;
+    this.data = null;
+    this.modalContainer = document.createElement('div');
+    this.modalContainer.className = 'modalContainer';
+    this.modalContainer.classList.add('hidden');
+    props.appendChild(this.modalContainer);
+    this.render();
   }
 
   _createClass(CommonDialog, [{
     key: "open",
     value: function open() {
-      console.log('open');
+      this.isModalOpen = !this.isModalOpen;
+      var modal = document.querySelector('.modalContainer');
+      modal.classList.toggle('hidden');
     }
   }, {
     key: "close",
@@ -42,6 +54,16 @@ var CommonDialog = /*#__PURE__*/function () {
   }, {
     key: "setDataSource",
     value: function setDataSource() {}
+  }, {
+    key: "render",
+    value: function render() {
+      var background = document.createElement('div');
+      background.className = 'background';
+      var modalContents = document.createElement('section');
+      modalContents.className = 'modalContents';
+      this.modalContainer.appendChild(background);
+      this.modalContainer.appendChild(modalContents);
+    }
   }]);
 
   return CommonDialog;
