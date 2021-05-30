@@ -1,7 +1,0 @@
-// Imports
-import ___CSS_LOADER_API_IMPORT___ from "../../node_modules/css-loader/dist/runtime/api.js";
-var ___CSS_LOADER_EXPORT___ = ___CSS_LOADER_API_IMPORT___(function(i){return i[1]});
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, ":root{--background: white;--text: black;--gray: gray}body{background:var(--gray)}.hidden{visibility:hidden}.modalContainer{position:fixed;top:0;bottom:0;left:0;right:0;z-index:1;display:flex;justify-content:center;align-items:center}.backgound{position:absolute;width:100%;height:100%;background-color:rgba(0,0,0,.5)}.modalContents{position:relative;display:flex;flex-direction:column;height:70%;width:30%;padding:10px;background-color:var(--background);color:var(--text)}", ""]);
-// Exports
-export default ___CSS_LOADER_EXPORT___;
