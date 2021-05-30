@@ -39,6 +39,8 @@ export default class CommonDialog {
 
   editable(isEdiable) {
     this.isEdiable = isEdiable;
+    this.modalContainer.innerHTML = '';
+    this.render();
   }
 
   save() {}
@@ -59,23 +61,33 @@ export default class CommonDialog {
 
     let title;
 
-    title = document.createElement('div');
-    title.innerHTML = this.state.title;
+    if (this.isEdiable) {
+      title = document.createElement('input');
+      title.value = this.state.title;
+    } else {
+      title = document.createElement('div');
+      title.innerHTML = this.state.title;
+    }
 
     const inputForm = document.createElement('form');
     if (this.isEdiable) {
       INPUT_TITLE.forEach((node) => {
-        if (node === 'email' || node === 'name' || node === 'mobile') {
-        }
-        
         const inputTitle = document.createElement('div');
         inputTitle.innerText = node;
 
         const row = document.createElement('div');
         row.className = 'row';
-        const userInput = document.createElement('div');
+        let userInput;
 
-        userInput.innerText = this.state[node];
+        if (node === 'email' || node === 'name' || node === 'mobile') {
+          userInput = document.createElement('input');
+          userInput.value = this.state[node];
+          userInput.name = node;
+        } else {
+          userInput = document.createElement('div');
+          userInput.innerText = this.state[node];
+        }
+
         row.appendChild(inputTitle);
         row.appendChild(userInput);
 
@@ -118,8 +130,12 @@ export default class CommonDialog {
     });
 
     editButton.addEventListener('click', () => {
-      this.isEdiable = !isEdiable;
+      const isEdiable = !this.isEdiable;
       this.editable(isEdiable);
+    });
+
+    inputForm.addEventListener('keyup', (e) => {
+      console.log(e.target.name, e.target.value);
     });
 
     buttonWrapper.appendChild(editButton);

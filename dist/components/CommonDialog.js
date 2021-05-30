@@ -59,6 +59,8 @@ var CommonDialog = /*#__PURE__*/function () {
     key: "editable",
     value: function editable(isEdiable) {
       this.isEdiable = isEdiable;
+      this.modalContainer.innerHTML = '';
+      this.render();
     }
   }, {
     key: "save",
@@ -85,20 +87,34 @@ var CommonDialog = /*#__PURE__*/function () {
       var modalContents = document.createElement('section');
       modalContents.className = 'modalContents';
       var title;
-      title = document.createElement('div');
-      title.innerHTML = this.state.title;
+
+      if (this.isEdiable) {
+        title = document.createElement('input');
+        title.value = this.state.title;
+      } else {
+        title = document.createElement('div');
+        title.innerHTML = this.state.title;
+      }
+
       var inputForm = document.createElement('form');
 
       if (this.isEdiable) {
         INPUT_TITLE.forEach(function (node) {
-          if (node === 'email' || node === 'name' || node === 'mobile') {}
-
           var inputTitle = document.createElement('div');
           inputTitle.innerText = node;
           var row = document.createElement('div');
           row.className = 'row';
-          var userInput = document.createElement('div');
-          userInput.innerText = _this.state[node];
+          var userInput;
+
+          if (node === 'email' || node === 'name' || node === 'mobile') {
+            userInput = document.createElement('input');
+            userInput.value = _this.state[node];
+            userInput.name = node;
+          } else {
+            userInput = document.createElement('div');
+            userInput.innerText = _this.state[node];
+          }
+
           row.appendChild(inputTitle);
           row.appendChild(userInput);
           inputForm.appendChild(row);
@@ -132,9 +148,12 @@ var CommonDialog = /*#__PURE__*/function () {
         _this.close();
       });
       editButton.addEventListener('click', function () {
-        _this.isEdiable = !isEdiable;
+        var isEdiable = !_this.isEdiable;
 
         _this.editable(isEdiable);
+      });
+      inputForm.addEventListener('keyup', function (e) {
+        console.log(e.target.name, e.target.value);
       });
       buttonWrapper.appendChild(editButton);
       buttonWrapper.appendChild(cancelButton);
