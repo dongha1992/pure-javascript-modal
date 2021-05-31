@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
 .hidden {
@@ -38,22 +39,59 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 70%;
-  width: 50%;
-  padding: 10px;
+  width: 500px;
   background-color: var(--background);
   color: var(--text);
+  padding: 10px 20px;
+}
+
+.button {
+  padding: 10px;
+}
+
+.mainButtonWrapper {
 }
 
 .buttonWrapper {
+  width: 100%;
+  margin-top: 80px;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.changeTtitleButton {
+.changeTitleButton {
+  padding: 10px;
 }
 
 .openButton {
+  padding: 10px;
+  margin-left: 20px;
+}
+.button {
+  margin-right: 10px;
 }
 
 .row {
   display: flex;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.dialogTitle {
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 40px;
+}
+
+.inputTitle {
+  width: 20%;
+  margin-right: 20px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.userInput {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px;
 }

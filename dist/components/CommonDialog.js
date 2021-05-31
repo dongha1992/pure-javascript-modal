@@ -5,6 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -64,10 +70,18 @@ var CommonDialog = /*#__PURE__*/function () {
     }
   }, {
     key: "save",
-    value: function save() {}
+    value: function save() {
+      this.isEdiable = !this.isEdiable;
+      this.modalContainer.innerHTML = '';
+      this.render();
+    }
   }, {
     key: "cancel",
-    value: function cancel() {}
+    value: function cancel() {
+      this.isEdiable = !this.isEdiable;
+      this.modalContainer.innerHTML = '';
+      this.render();
+    }
   }, {
     key: "getDataSource",
     value: function getDataSource() {
@@ -81,18 +95,19 @@ var CommonDialog = /*#__PURE__*/function () {
     value: function render() {
       var _this = this;
 
-      console.log(this.isChangeTtile);
       var backgroundOverlay = document.createElement('div');
       backgroundOverlay.className = 'backgroundOverlay';
       var modalContents = document.createElement('section');
       modalContents.className = 'modalContents';
-      var title;
+      var title, editButton, cancelButton, editCancelButton, saveButton;
 
       if (this.isEdiable) {
         title = document.createElement('input');
+        title.className = 'dialogTitle';
         title.value = this.state.title;
       } else {
         title = document.createElement('div');
+        title.className = 'dialogTitle';
         title.innerHTML = this.state.title;
       }
 
@@ -101,6 +116,7 @@ var CommonDialog = /*#__PURE__*/function () {
       if (this.isEdiable) {
         INPUT_TITLE.forEach(function (node) {
           var inputTitle = document.createElement('div');
+          inputTitle.className = 'inputTitle';
           inputTitle.innerText = node;
           var row = document.createElement('div');
           row.className = 'row';
@@ -115,6 +131,7 @@ var CommonDialog = /*#__PURE__*/function () {
             userInput.innerText = _this.state[node];
           }
 
+          userInput.className = 'userInput';
           row.appendChild(inputTitle);
           row.appendChild(userInput);
           inputForm.appendChild(row);
@@ -122,10 +139,12 @@ var CommonDialog = /*#__PURE__*/function () {
       } else {
         INPUT_TITLE.forEach(function (node) {
           var inputTitle = document.createElement('div');
+          inputTitle.className = 'inputTitle';
           inputTitle.innerText = node;
           var row = document.createElement('div');
           row.className = 'row';
           var userInput = document.createElement('div');
+          userInput.className = 'userInput';
           userInput.innerText = _this.state[node];
           row.appendChild(inputTitle);
           row.appendChild(userInput);
@@ -135,28 +154,55 @@ var CommonDialog = /*#__PURE__*/function () {
 
       var buttonWrapper = document.createElement('div');
       buttonWrapper.classList.add('buttonWrapper');
-      var editButton = document.createElement('button');
-      editButton.classList.add('button');
-      editButton.innerText = 'Edit';
-      var cancelButton = document.createElement('button');
-      cancelButton.classList.add('button');
-      cancelButton.innerText = 'Close';
-      cancelButton.addEventListener('click', function () {
-        _this.close();
-      });
+
+      if (this.isEdiable) {
+        editCancelButton = document.createElement('button');
+        editCancelButton.classList.add('button');
+        editCancelButton.innerText = 'Cancel';
+        saveButton = document.createElement('button');
+        saveButton.classList.add('button');
+        saveButton.innerText = 'save';
+        buttonWrapper.appendChild(editCancelButton);
+        buttonWrapper.appendChild(saveButton);
+      } else {
+        editButton = document.createElement('button');
+        editButton.classList.add('button');
+        editButton.innerText = 'Edit';
+        cancelButton = document.createElement('button');
+        cancelButton.classList.add('button');
+        cancelButton.innerText = 'Close';
+        buttonWrapper.appendChild(editButton);
+        buttonWrapper.appendChild(cancelButton);
+      }
+
       backgroundOverlay.addEventListener('click', function () {
         _this.close();
       });
-      editButton.addEventListener('click', function () {
-        var isEdiable = !_this.isEdiable;
 
-        _this.editable(isEdiable);
-      });
+      if (this.isEdiable) {
+        editCancelButton.addEventListener('click', function () {
+          _this.cancel();
+        });
+        saveButton.addEventListener('click', function () {
+          _this.save();
+        });
+      } else {
+        cancelButton.addEventListener('click', function () {
+          _this.close();
+        });
+        editButton.addEventListener('click', function () {
+          var isEdiable = !_this.isEdiable;
+
+          _this.editable(isEdiable);
+        });
+      }
+
       inputForm.addEventListener('keyup', function (e) {
-        console.log(e.target.name, e.target.value);
+        var _e$target = e.target,
+            name = _e$target.name,
+            value = _e$target.value;
+        _this.state = _objectSpread(_objectSpread({}, _this.state), {}, _defineProperty({}, name, value));
       });
-      buttonWrapper.appendChild(editButton);
-      buttonWrapper.appendChild(cancelButton);
       modalContents.appendChild(title);
       modalContents.appendChild(inputForm);
       modalContents.appendChild(buttonWrapper);
