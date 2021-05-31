@@ -48,6 +48,7 @@ export default class CommonDialog {
     this.modalContainer.innerHTML = '';
     this.render();
   }
+  
   cancel() {
     this.isEdiable = !this.isEdiable;
     this.modalContainer.innerHTML = '';
@@ -67,21 +68,22 @@ export default class CommonDialog {
     const modalContents = document.createElement('section');
     modalContents.className = 'modalContents';
 
+    let buttonWrapper = document.createElement('div');
+    buttonWrapper.classList.add('buttonWrapper');
+
+    const inputForm = document.createElement('form');
+    const titleInputForm = document.createElement('form');
+
     let title, editButton, cancelButton, editCancelButton, saveButton;
 
     if (this.isEdiable) {
       title = document.createElement('input');
       title.className = 'dialogTitle';
+      title.name = 'title';
       title.value = this.state.title;
-    } else {
-      title = document.createElement('div');
-      title.className = 'dialogTitle';
-      title.innerHTML = this.state.title;
-    }
 
-    const inputForm = document.createElement('form');
+      titleInputForm.appendChild(title);
 
-    if (this.isEdiable) {
       INPUT_TITLE.forEach((node) => {
         const inputTitle = document.createElement('div');
         inputTitle.className = 'inputTitle';
@@ -105,7 +107,32 @@ export default class CommonDialog {
 
         inputForm.appendChild(row);
       });
+
+      editCancelButton = document.createElement('button');
+      editCancelButton.classList.add('button');
+      editCancelButton.innerText = 'Cancel';
+
+      saveButton = document.createElement('button');
+      saveButton.classList.add('button');
+      saveButton.innerText = 'save';
+
+      buttonWrapper.appendChild(editCancelButton);
+      buttonWrapper.appendChild(saveButton);
+
+      modalContents.appendChild(titleInputForm);
+
+      editCancelButton.addEventListener('click', () => {
+        this.cancel();
+      });
+
+      saveButton.addEventListener('click', () => {
+        this.save();
+      });
     } else {
+      title = document.createElement('div');
+      title.className = 'dialogTitle';
+      title.innerHTML = this.state.title;
+
       INPUT_TITLE.forEach((node) => {
         const inputTitle = document.createElement('div');
         inputTitle.className = 'inputTitle';
@@ -121,23 +148,7 @@ export default class CommonDialog {
 
         inputForm.appendChild(row);
       });
-    }
 
-    let buttonWrapper = document.createElement('div');
-    buttonWrapper.classList.add('buttonWrapper');
-
-    if (this.isEdiable) {
-      editCancelButton = document.createElement('button');
-      editCancelButton.classList.add('button');
-      editCancelButton.innerText = 'Cancel';
-
-      saveButton = document.createElement('button');
-      saveButton.classList.add('button');
-      saveButton.innerText = 'save';
-
-      buttonWrapper.appendChild(editCancelButton);
-      buttonWrapper.appendChild(saveButton);
-    } else {
       editButton = document.createElement('button');
       editButton.classList.add('button');
       editButton.innerText = 'Edit';
@@ -148,21 +159,9 @@ export default class CommonDialog {
 
       buttonWrapper.appendChild(editButton);
       buttonWrapper.appendChild(cancelButton);
-    }
 
-    backgroundOverlay.addEventListener('click', () => {
-      this.close();
-    });
+      modalContents.appendChild(title);
 
-    if (this.isEdiable) {
-      editCancelButton.addEventListener('click', () => {
-        this.cancel();
-      });
-
-      saveButton.addEventListener('click', () => {
-        this.save();
-      });
-    } else {
       cancelButton.addEventListener('click', () => {
         this.close();
       });
@@ -173,15 +172,24 @@ export default class CommonDialog {
       });
     }
 
+    backgroundOverlay.addEventListener('click', () => {
+      this.close();
+    });
+
+    titleInputForm.addEventListener('keyup', (e) => {
+      const { name, value } = e.target;
+      this.state[name] = value;
+    });
+
     inputForm.addEventListener('keyup', (e) => {
       const { name, value } = e.target;
+      console.log(name, value);
       this.state = {
         ...this.state,
         [name]: value,
       };
     });
 
-    modalContents.appendChild(title);
     modalContents.appendChild(inputForm);
     modalContents.appendChild(buttonWrapper);
     this.modalContainer.appendChild(backgroundOverlay);
