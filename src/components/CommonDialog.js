@@ -74,7 +74,6 @@ export default class CommonDialog {
       INPUT_TITLE.forEach((node) => {
         const inputTitle = document.createElement('div');
         inputTitle.innerText = node;
-
         const row = document.createElement('div');
         row.className = 'row';
         let userInput;
